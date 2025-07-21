@@ -6,7 +6,7 @@ on:
       - main
       
   schedule:
-    - cron: "0 4,12,15,18,19,23 * * *" # Runs at 4 AM, 12 PM, 3 PM, 6 PM, 7 PM, 11 PM, and midnight UTC
+    - cron: "0 4,12,15,18,19,23 * * *" # Runs at 4 AM, 12 PM, 3 PM, 6 PM, 7 PM, 11 PM UTC
 
 jobs:
   auto_commit:
@@ -20,7 +20,7 @@ jobs:
 
       - name: Update Last Modified Timestamp
         run: |
-          current_date=$(date '+%Y-%m-%dT%H:%M:%SZ')
+          current_date=$(date -u '+%Y-%m-%dT%H:%M:%SZ')
           echo $current_date > LAST_UPDATED
           
       - name: Configure Git
@@ -48,11 +48,9 @@ jobs:
           
           # Select a random commit message
           random_index=$(( RANDOM % ${#commit_messages[@]} ))
-          git commit -m "${commit_messages[$random_index]}"
+          git commit -m "${commit_messages[$random_index]}" --allow-empty
           
       - name: Push Changes
         uses: ad-m/github-push-action@master
         with:
-          force: true
-          directory: "."
           github_token: ${{ secrets.GITHUB_TOKEN }}
