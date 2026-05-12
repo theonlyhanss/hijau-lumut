@@ -26,7 +26,7 @@ jobs:
       - name: Configure Git
         run: |
           git config --local user.name "XIN"
-          git config --local user.email "hanmetaforce@gmail.com"
+          git config --local user.email "contact@hanproject.my.id"
 
       - name: Commit Changes
         run: |
